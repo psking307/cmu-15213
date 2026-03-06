@@ -1,0 +1,48 @@
+  40100c:	48 83 ec 18          	sub    $0x18,%rsp
+  401010:	48 8d 4c 24 0c       	lea    0xc(%rsp),%rcx                         rsp+12存入rcx       sscanf第四个参数地址
+  401015:	48 8d 54 24 08       	lea    0x8(%rsp),%rdx			      rsp+8存入rdx         sscanf第三个参数地址
+  40101a:	be cf 25 40 00       	mov    $0x4025cf,%esi                      0x4025cf存入esi    sscanf第二个参数地址       "%d %d"
+  40101f:	b8 00 00 00 00       	mov    $0x0,%eax 				      0存入eax  初始化
+  401024:	e8 c7 fb ff ff       	call   400bf0 <__isoc99_sscanf@plt>
+  401029:	83 f8 02             	cmp    $0x2,%eax					       eax和2比较   不相等爆炸    说明输入两个参数
+  40102c:	75 07                	jne    401035 <phase_4+0x29>
+  40102e:	83 7c 24 08 0e       	cmpl   $0xe,0x8(%rsp)                       14和rsp+8比较       我输入的第一个x（数）
+  401033:	76 05                	jbe    40103a <phase_4+0x2e>                要求x <= 14
+
+  40103a:	ba 0e 00 00 00       	mov    $0xe,%edx   				14存入edx         func4第3个参数
+  40103f:	be 00 00 00 00       	mov    $0x0,%esi					         0存入esi            func4第2个参数
+  401044:	8b 7c 24 08          	mov    0x8(%rsp),%edi				rsp+8存入edi    func4第1个参数   x
+
+  401048:	e8 81 ff ff ff       	call   400fce <func4>                         x  0  14
+
+  400fce:	48 83 ec 08          	sub    $0x8,%rsp
+  400fd2:	89 d0                	mov    %edx,%eax					edx存入eax      eax = 14
+  400fd4:	29 f0                	sub    %esi,%eax						eax - esi存入eax  eax = 14
+  400fd6:	89 c1                	mov    %eax,%ecx					eax存入ecx         ecx = 14
+  400fd8:	c1 e9 1f             	shr    $0x1f,%ecx						ecx 逻辑右移31位     意思是取符号位  符号位0
+  400fdb:	01 c8                	add    %ecx,%eax					eax + ecx存入 eax    eax = 14
+  400fdd:	d1 f8                	sar    %eax						eax算数右移1位     意思是eax/2向下取整 存入eax   eax = 7
+  400fdf:	8d 0c 30             	lea    (%rax,%rsi,1),%ecx				rax+rsi存入ecx      ecx = 7
+  400fe2:	39 f9                	cmp    %edi,%ecx						比较edi 和ecx    x和7比较
+  400fe4:	7e 0c                	jle    400ff2 <func4+0x24>	      
+
+分支一   ecx < edi    x > 7 
+  400fe6:	8d 51 ff             	lea    -0x1(%rcx),%edx              
+  400fe9:	e8 e0 ff ff ff       	call   400fce <func4>                       x  0  6   x 0 3
+															  x 4  6
+
+分支二  ecx>= edi   x <= 7
+  400ff2:	b8 00 00 00 00       	mov    $0x0,%eax                     x   
+  400ff7:	39 f9                	cmp    %edi,%ecx                             x和ecx
+  400ff9:	7d 0c                	jge    401007 <func4+0x39>         若ecx >= edi   即x<=7   
+  400ffb:	8d 71 01             	lea    0x1(%rcx),%esi			     x  8  14
+  400ffe:	e8 cb ff ff ff       	call   400fce <func4>			
+
+  40104d:	85 c0                	test   %eax,%eax                                eax非0爆炸                 
+  40104f:	75 07                	jne    401058 <phase_4+0x4c>
+  401051:	83 7c 24 0c 00       	cmpl   $0x0,0xc(%rsp)              0和rsp + 12比较 要求相等   所以第二个数应该填0
+  401056:	74 05                	je     40105d <phase_4+0x51>
+  40105d:	48 83 c4 18          	add    $0x18,%rsp
+  401061:	c3                   	ret
+
+0 0

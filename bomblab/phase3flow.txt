@@ -1,0 +1,45 @@
+  400f43:	48 83 ec 18          	sub    $0x18,%rsp                                     rsp(0x7fffffffdbc0) = 0
+  400f47:	48 8d 4c 24 0c       	lea    0xc(%rsp),%rcx                        rsp + 12(0x7fffffffdbcc) 存入rcx, rcx = 0x7fffffffdbcc (0)  sscanf第4个参数
+  400f4c:	48 8d 54 24 08       	lea    0x8(%rsp),%rdx                       rdx = 0x7fffffffdbc8 (0x14ac)     sscanf第3个参数
+  400f51:	be cf 25 40 00       	mov    $0x4025cf,%esi		     esi = 0x4025cf  sscanf第2个参数  "%d %d"
+  400f56:	b8 00 00 00 00       	mov    $0x0,%eax				     eax = 0
+  400f5b:	e8 90 fc ff ff       	call   400bf0 <__isoc99_sscanf@plt> 
+  400f60:	83 f8 01             	cmp    $0x1,%eax					     这时eax 已被覆盖 eax = 2
+  400f63:	7f 05                	jg     400f6a <phase_3+0x27>		      eax 和 1 比较 eax > 1 就跳 否则爆炸
+
+  400f6a:	83 7c 24 08 07       	cmpl   $0x7,0x8(%rsp)                      (rsp + 8)      第一个数和 7 比较
+  400f6f:	77 3c                	ja     400fad <phase_3+0x6a>                  (rsp + 8) >  7爆炸 
+  400f71:	8b 44 24 08          	mov    0x8(%rsp),%eax                              (rsp + 8）存入eax, eax = 第一个数
+  400f75:	ff 24 c5 70 24 40 00 	jmp    *0x402470(,%rax,8)                
+
+#0x402470 0x400f7c
+400f7c:	b8 cf 00 00 00       	mov    $0xcf,%eax       0 207   
+
+#0x402478 0x400fb9
+400fb9:	b8 37 01 00 00       	mov    $0x137,%eax    1 311
+
+#0x402480 0x400f83
+400f83:	b8 c3 02 00 00       	mov    $0x2c3,%eax    2 707
+
+#0x402488 0x400f8a
+400f8a:	b8 00 01 00 00       	mov    $0x100,%eax    3 256
+
+#0x402490 0x400f91
+400f91:	b8 85 01 00 00       	mov    $0x185,%eax    4 389
+
+#0x402498 0x400f98
+400f98:	b8 ce 00 00 00       	mov    $0xce,%eax       5 206
+
+#0x4024a0 0x400f9f
+400f9f:	b8 aa 02 00 00       	mov    $0x2aa,%eax     6 682
+
+#0x4024a8 0x400fa6
+400fa6:	b8 47 01 00 00       	mov    $0x147,%eax    7 327
+
+  400fbe:	3b 44 24 0c          	cmp    0xc(%rsp),%eax
+  400fc2:	74 05                	je     400fc9 <phase_3+0x86>
+
+  400fc9:	48 83 c4 18          	add    $0x18,%rsp
+  400fcd:	c3                   	ret
+
+0 207 / 1 311 /  2 707 / 3 256 / 4 389 / 5 206 / 6 682 / 7 327
